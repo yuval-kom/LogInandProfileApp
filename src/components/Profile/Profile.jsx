@@ -1,5 +1,5 @@
 import "./profile.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
   doc,
@@ -16,7 +16,6 @@ import {
   updatePassword,
   signOut,
 } from "firebase/auth";
-import { useState } from "react/cjs/react.development";
 import { Timestamp } from "firebase/firestore";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +31,8 @@ export default function Profile() {
     setError,
     formState: { errors },
   } = useForm();
-  const [isSameData, setIsSameData] = useState(true); //for UseEffect, change when create new user
+  //for UseEffect, change when create new user
+  const [isSameData, setIsSameData] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
