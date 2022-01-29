@@ -32,7 +32,7 @@ export default function Profile() {
     setError,
     formState: { errors },
   } = useForm();
-  const [isSameData, setIsSameData] = useState(true);
+  const [isSameData, setIsSameData] = useState(true); //for UseEffect, change when create new user
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -44,6 +44,7 @@ export default function Profile() {
   const [ChangeEmail, setChangeEmail] = useState(false);
   const navigateTo = useNavigate();
 
+  //happens only when new user logged-in (at login page | after createUserWithEmailAndPassword)
   useEffect(() => {
     const docRef = doc(db, "users", auth.currentUser.uid);
     const getUserData = async () => {
@@ -65,7 +66,6 @@ export default function Profile() {
   }, [isSameData]);
 
   const onSubmit = (data) => {
-    console.log(data);
     if (updateMode) {
       updateUserData(data);
     } else if (createMode) {
@@ -73,6 +73,7 @@ export default function Profile() {
     }
   };
 
+  //creat user on firebase authentication and add new user to users collection
   const createNewUser = async (data) => {
     try {
       const { user } = await createUserWithEmailAndPassword(
@@ -82,6 +83,7 @@ export default function Profile() {
       );
       try {
         var userRef = collection(db, "users");
+        //set new user doc with the same id from firebase authentication
         await setDoc(doc(userRef, user.uid), {
           address: data.address,
           email: data.email,
@@ -100,10 +102,12 @@ export default function Profile() {
   };
 
   const updateUserData = async (data) => {
+    //when in update mode there is no value at data.birthDate from <Controller> so need to set to birthDate who change on onChange
     data.birthDate = birthDate;
     const docToUpdate = doc(db, "users", auth.currentUser.uid);
     try {
       await updateDoc(docToUpdate, data);
+      //if password or email changed, need to update the firebase authentication
       if (ChangePass) {
         updateUserPassAuth();
         setChangePass(false);
@@ -135,7 +139,7 @@ export default function Profile() {
       .catch((err) => {
         console.log("error at delete user");
       });
-
+    //go to login page
     navigateTo("/");
   }
   const deleteUserDoc = async () => {
@@ -155,9 +159,11 @@ export default function Profile() {
       .catch((err) => {
         console.log("error at sign-out");
       });
+    //go to login page
     navigateTo("/");
   }
 
+  //react-hook-form only on updateMode || createMode
   return (
     <div className="profile">
       <div className="profileTitle">
@@ -314,7 +320,6 @@ export default function Profile() {
                   className="formButton"
                   onClick={() => {
                     setUpdateMode(true);
-                    setCreateMode(false);
                   }}
                 >
                   Update
@@ -322,8 +327,8 @@ export default function Profile() {
                 <button
                   className="formButton"
                   onClick={() => {
-                    setUpdateMode(false);
                     setCreateMode(true);
+                    //reset form filed
                     reset();
                   }}
                 >
