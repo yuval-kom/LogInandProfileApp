@@ -1,25 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, Timestamp } from "@firebase/firestore";
-import {
-  collection,
-  doc,
-  getDocs,
-  setDoc,
-  addDoc,
-  deleteDoc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  updateEmail,
-  updatePassword,
-  deleteUser,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
+import { getFirestore } from "@firebase/firestore";
+import { getAuth } from "firebase/auth";
 
-// web app's Firebase configuration
+//Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyApdHfF929LDqnWOy_uaCN5ucOU37j1UYg",
   authDomain: "nifty-seat-336216.firebaseapp.com",
