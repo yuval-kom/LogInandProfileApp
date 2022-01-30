@@ -2,6 +2,6 @@
 
 1. Clone the repository
 2. Indisde project folder run:  
-   npm install
-   npm start
+   a. npm install
+   b. npm start
 
